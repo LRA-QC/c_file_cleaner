@@ -14,12 +14,16 @@ void show_help()
 void clean_filename(char *path, char *filename)
 {
 
+    for(int k=0;k<strlen(filename);++k) {
+        printf("(%.2x)", (unsigned char)filename[k]);
+    }
+
 }
 
 void process_dir(char *path)
 {
     char d_path[PATH_MAX]; // here I am using sprintf which is safer than strcat
-    int k;
+
     struct dirent * dir;
 
     printf("Processing: %s\n",path);
@@ -32,9 +36,7 @@ void process_dir(char *path)
     while ((dir = readdir(d)) != NULL) {
         if(dir-> d_type != DT_DIR) {
             printf("- Filename : {[%s]} %li\n  Hex      :",dir->d_name,strlen(dir->d_name));
-            for(k=0;k<strlen(dir->d_name);++k) {
-                printf("(%.2x)", (unsigned char)dir->d_name[k]);
-            }
+            clean_filename(path,dir->d_name);
             printf("\n");
         }
         else{
